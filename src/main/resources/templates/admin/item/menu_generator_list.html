@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Menu List</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script>
+	function listByMenuType(value){
+		$('#menu_search_form').submit();
+	}
+</script>
+
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" align="center" style="margin-top: 10px;">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Menu List
+				</div>
+				<div class="panel-body">
+					<div>
+						<div class="col-md-4 form-group">
+							<form id="menu_search_form" th:action="@{/admin/menuCreatorList}" method="post">
+								<label for="menuType">Select Menu Type:</label>
+								<select class="form-control" id="menuType" name="menuTypeSelected" th:object="${menuTypeSelected}" onchange="listByMenuType(this.value)">
+								    <option value="-1">All</option>
+								    <option 
+								    	th:each="menuTypeObj : ${menuTypeList}" 
+								    	th:value="${menuTypeObj.menuTypeId}" 
+								    	th:text="${menuTypeObj.menuTypeName}"
+								    	th:selected="(${menuTypeObj.menuTypeId} == ${menuTypeSelected})"
+                               			/>
+								 </select>
+							 </form>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="col-md-12" style="border-style: solid; border-color: #ddd; border-width: 1px; border-radius: 4px; text-shadow: 5px; margin-bottom: 5px;">
+				<table class="table" style="margin:5px;">
+					<thead>
+						<tr>
+							<th>
+								Index
+							</th>
+							<th>
+								Menu Name
+							</th>
+							<th>
+								Menu Type
+							</th>
+							<th>
+								&nbsp;
+							</th>
+							<th>
+								&nbsp;
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${#lists.isEmpty(menuList)}">
+							<td colspan="5" align="center">
+								No data found
+							</td>
+						</tr>
+						<tr th:unless="${#lists.isEmpty(menuList)}" th:each="mObj, start:${menuList}">
+							<td th:text="${start.count}">
+								Index
+							</td>
+							<td th:text="${mObj.menuName}">
+								Item Name
+							</td>
+							<td th:text="${mObj.menuType.menuTypeName}">
+								Item Type
+							</td>
+							<td>
+								<form
+									action="#"
+									method="post" 
+									th:action="@{/admin/menuCreate}">
+									<input type="hidden" name="loadForEditmenuId" th:value="${mObj.menuId}"/>
+									<input type="hidden" name="requestType" value="LoadForEdit"/>
+									<button 
+										type="submit"
+										class="btn btn-xs">
+										Edit
+									</button>
+								</form>
+							</td>
+							<td>
+								<form
+									action="#"
+									method="get" 
+									th:action="@{/admin/baseItemDelete}">
+									<input type="hidden" name="menuId" th:value="${mObj.menuId}" />
+									<button 
+										type="submit"
+										class="btn btn-xs">
+										Delete
+									</button>
+								</form>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-12" align="center">
+				<form th:action="@{/admin/menuCreate}">
+					<button class="btn btn-lg btn-warning btn-block" type="Submit">Add / Edit / Update Menu Item</button>
+				</form>	
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

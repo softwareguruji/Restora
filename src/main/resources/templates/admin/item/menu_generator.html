@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Menu Generator</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script th:src='@{/tinymce/tinymce.min.js}'></script>
+<script type="text/javascript">
+	tinymce.init({
+		selector: 'textarea',
+		toolbar1: "bold italic underline"
+	});
+	
+	function confirmWithMessage(){
+		
+		var conVal = confirm('If you change it. Details will be lost and you need to rewrite it. Are you sure you want to change it?');
+		if(conVal){
+			alert('confirmed...');
+			document.getElementById('changeMenuType').value = true;
+			document.getElementById('menuGenerate').submit();
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	function showBaseItems(){
+		document.getElementById('requestType').value='GenerateBaseItemList';
+		document.getElementById('menuGenerate').submit();
+	}
+	
+	function goToListPage(){
+		document.getElementById('menuList').submit();
+	}
+	
+</script>
+<style type="text/css">
+.inlineList {
+   display: flex;
+   flex-direction: row;
+   /* Below sets up your display method: flex-start|flex-end|space-between|space-around */
+   justify-content: flex-start; 
+   /* Below removes bullets and cleans white-space */
+   list-style: none;
+   padding: 0;
+   /* Bonus: forces no word-wrap */
+   white-space: nowrap;
+ }
+</style>
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+	<form id="menuGenerate" autocomplete="off" action="#" th:action="@{/admin/menuCreate}"
+						th:object="${menuGenerate}" method="post" class="form-inline">
+	<input type="hidden" id="requestType" name="requestType" value="Normal" />
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 10px;">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="text-align: center">Create Menu Item and Price details for the same</div>
+					<div class="panel-body">
+						<div class="col-md-12">
+							<div class="col-md-8">
+								<input type="hidden" th:field="*{menuId}" ></input>
+								<input type="text" th:field="*{menuName}" th:label="menuNameLabel" placeholder="Provide Menu Name"
+										class="form-control" style="width:100%"/>
+								<input type="hidden" id="changeMenuType" name="changeMenuType" value="false"/>
+							</div>
+							<div class="col-md-4">
+								<ul style="list-style-type: none;">
+								  <li th:each="mtl : ${menuTypeList}">
+								    <input type="radio" th:if="*{menuType} == null" th:field="*{menuType}" th:value="${mtl.menuTypeId}"/>
+								    <input type="radio" th:unless="*{menuType} == null" th:field="*{menuType}" th:value="${mtl.menuTypeId}" onclick="return confirmWithMessage();"/>
+								    <label th:for="${#ids.prev('menuType')}" th:text="${mtl.menuTypeName}" >Types</label>
+								  </li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12" th:if="*{menuType}" th:switch="*{menuType.menuTypeId}">
+				<div class="panel panel-default" th:case="1">
+					<div class="panel-heading" style="text-align: center">Fill up Fixed Menu Item Details</div>
+					<div class="panel-body">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<input type="hidden" th:field="*{fixedMenuItemObj.fixedMenuItemsId}" ></input>
+								<textarea rows="4" 
+									cols="100%" 
+									th:field="*{fixedMenuItemObj.fixedMenuDescription}" 
+									placeholder="Fill complete Fixed manu display description"
+									class="form-control"></textarea>
+								
+							</div>
+							<div class="col-md-12" style="margin-top: 5px;">
+								Set Price : <input type="text" class="form-control" size="4" th:field="*{fixedMenuItemObj.price}" /> $
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default" th:case="2">
+					<div class="panel-heading" style="text-align: center">Fill up Customized Menu Item Details</div>
+					<div class="panel-body">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<input type="hidden" th:field="*{customMenuItemObj.customMenuItemId}" > 
+								<textarea rows="4" 
+									cols="100%" 
+									th:field="*{customMenuItemObj.customizationDescription}" 
+									placeholder="Fill complete Custom manu display description"
+									class="form-control"></textarea>
+								
+							</div>
+							<div class="col-md-12">
+								<div th:each="mIQObj, start: *{customMenuItemObj.menuItemQuestions}" 
+										th:if="*{not #lists.isEmpty(customMenuItemObj.menuItemQuestions)}" class="col-md-12" style="border-style: dotted; border-width: 1px; margin-top: 2px; margin-bottom: 2px;">
+										<div class="col-md-10" style="border-right-width: 1px; border-right-style: dotted;">
+											<div>
+												<label th:text="${start.count+'. '+mIQObj.questionForChoose}"></label>
+											</div>
+											<div>
+												<label th:text="${'Question Type: '+mIQObj.questionOptionType.quetionOptionTypeName}"></label>
+											</div>
+											<div>
+												<div th:if="${#lists.isEmpty(mIQObj.listOfAvailableOptions)}">
+													No data found
+												</div>
+												<div class="col-md-12" th:unless="${#lists.isEmpty(mIQObj.listOfAvailableOptions)}" style="margin-top: 5px;">
+													<div class="col-md-3" th:each="biObj, start:${mIQObj.listOfAvailableOptions}">
+														<i class="glyphicon glyphicon-record" aria-hidden="true" th:if="${mIQObj.questionOptionType.id}==1"></i>
+														<i class="glyphicon glyphicon-unchecked" aria-hidden="true" th:if="${mIQObj.questionOptionType.id}==2"></i>
+														&nbsp;
+														<label th:text="${biObj.itemName}"></label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div>
+												Move Up
+											</div>
+											<div>
+												Edit
+											</div>
+											<div>
+												Delete
+											</div>
+											<div>
+												Move Down
+											</div>
+										</div>
+								</div>
+							</div>
+									
+									
+									 
+						<div class="col-md-12">
+							<div th:if="*{customMenuItemObj.customMenuItemId} != 0" class="col-md-12" th:object="${custMenuItemOptionsObj}" style="border-style: dotted; border-width: 1px;">
+								<!-- <input type="hidden" th:field="*{customMenuItemObj.customMenuItemId}" ></input>  -->
+								
+								<div id="optionCreator">
+									<div class="col-md-12">
+										Add new options to choose with it's question...
+										<input type="text" th:field="*{questionForChoose}" placeholder="Question Text"
+												class="form-control" style="width:100%; margin-top: 5px; margin-bottom: 5px;"/>
+									</div>
+									<div class="col-md-12">
+										<div class="col-md-6">
+											<label for="itemType">Select Item Type:</label>
+											<select class="form-control" id="itemType" name="itemTypeSelected" th:object="${itemTypeSelected}" onchange="listByItemType(this.value)">
+											    <option value="-1">Select One</option>
+											    <option 
+											    	th:each="itemTypeObj : ${itemTypeList}" 
+											    	th:value="${itemTypeObj.itemTypeId}" 
+											    	th:text="${itemTypeObj.itemTypeName}"
+											    	th:selected="(${itemTypeObj.itemTypeId} == ${itemTypeSelected})"
+		                                			/>
+											 </select>
+											 <input type="button" value="Show Base Items" class="btn btn-md" onclick="showBaseItems();"/>
+										</div>
+										<div class="col-md-6" style="display:inline">
+											 <label>Select type of selection providing:</label>
+											 <ul th:if="${not #lists.isEmpty(listQuestionOptionTypes)}" class="inlineList">
+											 	<li th:each="optionTypeId : ${listQuestionOptionTypes}">
+											 		<input type="radio" th:value="${optionTypeId.id}" th:id="${'queOptType'+optionTypeId.id}" th:field="*{questionOptionType}"/><label th:text="${optionTypeId.quetionOptionTypeName}" th:for="${'queOptType'+optionTypeId.id}" style="margin-right: 3px;"></label>
+											 	</li>
+											 </ul>
+											 
+										</div>
+									</div>
+									 
+									<!-- Start -->
+									<div th:if="${#lists.isEmpty(baseItemList)}">
+										No data found
+									</div>
+									<div class="col-md-12" th:unless="${#lists.isEmpty(baseItemList)}" style="margin-top: 5px;">
+										<div class="col-md-3" th:each="biObj, start:${baseItemList}">
+											<input type="checkbox" th:value="${biObj.baseItemId}" th:id="${'baseItem'+biObj.baseItemId}" style="margin: 2px;" th:field="*{listOfAvailableOptions}"><label th:text="${biObj.itemName}" th:for="${'baseItem'+biObj.baseItemId}"></label>
+										</div>
+									</div>
+									
+									<!-- End -->
+									
+									
+									
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div align="center">
+					<div class="col-md-offset-4 col-md-3">
+						<input type="submit" value="Save" class="btn btn-default">
+						<input type="reset" value="Reset" class="btn btn-default">
+						<button type="button" class="btn btn-default" onclick="goToListPage();">List Menu Item</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>&nbsp;</div>
+	</div>
+	</form>
+	<form id="menuList" th:action="@{/admin/menuCreatorList}" method="get">
+	</form>	
+</body>
+</html>

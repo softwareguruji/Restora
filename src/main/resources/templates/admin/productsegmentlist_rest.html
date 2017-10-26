@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+	<title>Product List</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+  	<script type="text/javascript" >
+	  	$(document).ready(function() {
+	  	    $('#userDataTable').DataTable( {
+	  	        "sAjaxSource": "listProductSegmentsRest",
+	  	        "sAjaxDataProp": "content",
+	  	        "aoColumns": [
+	  	            { "mData": "segmentEnglishName" },
+	  	            { "mData": "segmentFrenchName" },
+	  	            { "mData": "segmentGermanName"},
+	  	            { "mData": function(rowData){
+	  	            	var a = rowData.productId;
+	  	            	var b = "<button class=\"btn btn-success btn-xs\" onclick=\"updateCallById('"+a+"')\">Edit</button> &nbsp;&nbsp;";
+	  	            	b += "<button class=\"btn btn-success btn-xs\" onclick=\"deleteCallById('"+a+"')\">Delete</button> &nbsp;&nbsp;";
+	  	            	b += "<button class=\"btn btn-xs\" onclick=\"addSegmentCallById('"+a+"')\">Add New Segment</button>";
+	  	            	return b;
+	  	            }} 
+	  	        ]
+	  	    } );
+	  	} );
+	  	
+	  	function updateCallById(productId){
+	  		document.location.href = "viewUpdateProduct?product_id="+productId;
+	  	}
+	  	
+	  	function deleteCallById(productId){
+	  		var answer = confirm("Are you sure. You want to delete?");
+	  		if(answer){
+	  			document.location.href = "deleteProduct?product_id="+productId;
+	  		}
+	  	}
+	  	
+	  	function addSegmentCallById(productId){
+	  		alert(productId+' This is yet in TODO task...');
+	  		document.location.href = "viewProductSegment?product_id="+productId;
+	  	}
+  	</script>
+<body>
+	<div class="container-fluid">
+		<form th:action="@{/admin/home}" method="get">
+			<button class="btn btn-md btn-warning btn-block" type="Submit">Home</button>
+		</form>
+		<div class="col-md-12">
+			<div class="col-md-4"></div>
+			<div class="col-md-4"><h1>List of Products</h1></div>
+			<div class="col-md-4"></div>
+		</div>
+		
+		<table id="userDataTable" >
+			<thead>
+				<tr>
+					<th>
+						Seg. English Name
+					</th>
+					<th>
+						Seg. French Name
+					</th>
+					<th>
+						Seg. German Name
+					</th>
+					<th>
+						&nbsp;
+					</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>
+						Seg. English Name
+					</th>
+					<th>
+						Seg. French Name
+					</th>
+					<th>
+						Seg. German Name
+					</th>
+					<th>
+						&nbsp;
+					</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</body>
+</html>

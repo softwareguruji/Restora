@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Item Type</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12" align="center" style="margin-top: 10px;">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Add New Item Type
+					</div>
+					<div class="panel-body">
+						<div class="col-md-6 col-md-offset-3">
+							<form autocomplete="off" 
+									th:action="@{/admin/itemType}"
+									th:object="${itemType}" 
+									method="post">
+								<div class="input-group col-md-12">
+								  <input type="text" class="form-control" th:field="*{itemTypeName}" placeholder="Add new Item Name">
+								  <input type="hidden" th:field="*{itemTypeId}" />
+								  <div class="input-group-btn">
+									  <button class="btn btn-default" type="submit" th:text="${itemType.itemTypeId == 0}?'Save':'Update'">
+									  	Save
+									  </button>
+								  </div>
+								</div>
+								<div class="col-md-12">
+								  <label class="text-danger" th:if="${#fields.errors('itemTypeName')}" th:errors="*{itemTypeName}">Error Message</label>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-12" style="border-style: solid; border-color: #ddd; border-width: 1px; border-radius: 4px; text-shadow: 5px;">
+					<div class="col-md-offset-4 col-md-4">
+						<table class="table" style="margin:5px;">
+							<thead>
+								<tr>
+									<th width="5%">
+										Index
+									</th>
+									<th width="70%">
+										Item Type
+									</th>
+									<th>
+										&nbsp;
+									</th>
+									<th>
+										&nbsp;
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${#lists.isEmpty(itemTypeList)}">
+									<td colspan="4" align="center">
+										No data found
+									</td>
+								</tr>
+								<tr th:unless="${#lists.isEmpty(itemTypeList)}" th:each="itemTypeObj, start:${itemTypeList}">
+									<td th:text="${start.count}">
+										Index
+									</td>
+									<td th:text="${itemTypeObj.getItemTypeName()}">
+										Item Type
+									</td>
+									<td>
+										<form
+											action="#"
+											method="get" 
+											th:action="@{/admin/itemTypeEdit}">
+											<input type="hidden" name="itemTypeId" th:value="${itemTypeObj.itemTypeId}"/>
+											<button 
+												type="submit"
+												class="btn btn-xs">
+												Edit
+											</button>
+										</form>
+									</td>
+									<td>
+										<form
+											action="#"
+											method="get" 
+											th:action="@{/admin/itemTypeDelete}">
+											<input type="hidden" name="itemTypeId" th:value="${itemTypeObj.itemTypeId}" />
+											<button 
+												type="submit"
+												class="btn btn-xs">
+												Delete
+											</button>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

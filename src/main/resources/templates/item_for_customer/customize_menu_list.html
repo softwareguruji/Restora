@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customize Menu List</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+var name = new Array();
+total_price = function(radioOrCheck, id, price){
+	//alert(id+' -- '+price);
+	//var jsonObj = new JSON()
+	//name.push(id);
+	//alert(JSON.stringify(name));
+}
+
+function showCustomizationSection(customMenuItemId){
+	document.getElementById('customMenuItemForCustomization').value = customMenuItemId;
+	document.getElementByid('addToCartCustom').submit();
+}
+
+$(document).ready(function() {
+	$('#customizationObj').modal({
+		keyboard: false
+	});
+});
+
+</script>
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+<input type="hidden" id="customMenuItemForCustomization" th:value="${customMenuItemForCustomization}"/>
+<div th:each="cmiObj, start:${customMenuItemsList}" class="col-md-12" style="margin-top: 25px;">
+	<form 
+		id = "addToCartCustom"
+		th:action="@{/showCustomizationOption}"
+		th:method="post">
+		
+		<input type="hidden" id="menuId" name="menuId" th:value="*{cmiObj.customMenuItemId}"/>
+		
+		<div class="col-md-12">
+			<div th:utext="${cmiObj.customizationDescription}"></div>
+			<button class="btn" >Customize it!!</button>
+		</div>
+	</form>
+</div>
+
+<div class="container-fluid col-md-12" style="margin-top: 25px;">
+	<div id="customizationObj" class="col-md-12 modal fade" th:if="${singleCmiObj != null}" th:object="${singleCmiObj}">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+				<form 
+					th:action="@{/addToCartCustom}"
+					th:method="post">
+					<div class="modal-header">
+					      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					        <span aria-hidden="true">&times;</span>
+					      </button>
+					      <div th:utext="${singleCmiObj.customizationDescription}"></div>
+					</div>
+					<div class="modal-body container-fluid">
+						<input type="hidden" th:value="${singleCmiObj.menuItemReference.menuId}" name="menuId">
+						<div th:text="${customMenuItemId}"></div>
+					 	<div th:each="mIQObj, start: *{menuItemQuestions}" 
+								th:if="*{not #lists.isEmpty(menuItemQuestions)}" class="col-md-12" style="border-style: dotted; border-width: 1px; margin-top: 2px; margin-bottom: 2px;">
+							<div class="col-md-12">
+								<div>
+									<label th:text="${start.count+'. '+mIQObj.questionForChoose}"></label>
+								</div>
+								<div>
+									<div th:if="${#lists.isEmpty(mIQObj.listOfAvailableOptions)}">
+										No data found
+									</div>
+									<div class="col-md-12" th:unless="${#lists.isEmpty(mIQObj.listOfAvailableOptions)}" style="margin-top: 5px;">
+										<div class="col-md-4" th:each="biObj, bStart:${mIQObj.listOfAvailableOptions}" >
+											
+											<div th:if="${mIQObj.questionOptionType.id}==1">
+												<input type="radio" 
+													th:value="${biObj.baseItemId}"
+													th:onclick="'total_price(\'radio\',\'custom_selection_'+${mIQObj.customMenuItemOptionId}+'\',\''+${biObj.price}+'\')'"
+													th:id="${'custom_selection_'+mIQObj.customMenuItemOptionId+'_'+biObj.baseItemId}"
+													th:name="${'custom_selection_'+mIQObj.customMenuItemOptionId}"
+													/>
+												<label 
+													th:text="' '+${biObj.itemName}+' ($ '+${biObj.price}+')'"
+													th:for="${'custom_selection_'+mIQObj.customMenuItemOptionId+'_'+biObj.baseItemId}">
+													Radio
+												</label>
+											</div>
+				
+											<div th:if="${mIQObj.questionOptionType.id}==2">
+												<input type="checkbox" 
+													th:value="${biObj.baseItemId}"
+													th:onclick="'total_price(\'Check\',\'custom_selection_'+${mIQObj.customMenuItemOptionId}+'\',\''+${biObj.price}+'\')'"
+													th:id="${'custom_selection_'+mIQObj.customMenuItemOptionId+'_'+biObj.baseItemId}"
+													th:name="${'custom_selection_'+mIQObj.customMenuItemOptionId}"/>
+												<label 
+													th:text="' '+${biObj.itemName}+' ($ '+${biObj.price}+')'"
+													th:for="${'custom_selection_'+mIQObj.customMenuItemOptionId+'_'+biObj.baseItemId}">
+													Checkbox
+												</label>
+											</div>								
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Add To Cart</button>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      	</div>
+				</form>
+		   </div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

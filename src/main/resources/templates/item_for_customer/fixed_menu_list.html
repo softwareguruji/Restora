@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixed Menu List</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script>
+function order(menuId){
+	//alert(menuId);
+	document.getElementById('menuId').value=menuId;
+	document.getElementById('orderForm').submit();
+}
+</script>
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+<div th:each="fmiObj, start:${fixedMenuItemsList}" class="col-md-12" style="margin-top: 25px;">
+	<div class="col-md-11">
+		<div th:utext="${fmiObj.fixedMenuDescription}"></div>
+		<div>
+			<span th:text="'$ '+${fmiObj.price}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm" th:onclick="'order(\''+${fmiObj.menuItemReference.menuId}+'\');'">Add</button>
+		</div>
+	</div>
+	<!-- <div class="col-md-1">
+		<button class="btn btn-sm">Add to Cart</button>
+	</div> -->
+</div>
+
+<form id="orderForm" 
+		th:action="@{/addToCart}"
+		th:method="post">
+	<input type="hidden" id="menuId" name="menuId" />
+</form>
+
+</body>
+</html>

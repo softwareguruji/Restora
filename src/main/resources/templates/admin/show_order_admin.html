@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixed Menu List</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script>
+function cartOperation(cartItemId, type){
+	//alert(cartItemId+" : "+type);
+	document.getElementById('cartItemId').value=cartItemId;
+	document.getElementById('type').value=type;
+	document.getElementById('cartUpdateForm').submit();
+}
+
+function showOrderDetails(orderId){
+	$('#Order_'+orderId).modal({
+		keyboard: false
+	});
+}
+
+function orderComplete(orderId){
+	//alert(orderId);
+	document.getElementById('orderId').value = orderId;
+	document.getElementById('orderPlaceForm').submit();
+}
+
+</script>
+</head>
+<body>
+<div th:include="header :: header-nav"></div>
+
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item active">
+    <a class="nav-link" data-toggle="tab" href="#openOrder" role="tab">Open Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#completedOrder" role="tab">Completed Orders</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="openOrder" role="tabpanel">
+		&nbsp;
+		<div th:if="${allOpenOrderList != null}" class="container-fluid">
+			<div class="col-md-12">
+				<div class="col-md-1">
+					Item No.
+				</div>
+				<div class="col-md-2">
+					Order Date
+				</div>
+				<div class="col-md-2">
+					Order Status
+				</div>
+				<div class="col-md-2">
+					Order By
+				</div>
+				<div class="col-md-5">
+					Links
+				</div>
+			</div>
+			<hr />
+			<div th:each="order,start : ${allOpenOrderList}" class="col-md-12" style="margin-top: 25px;">
+				<div class="col-md-1" th:text="${start.count}">
+					Item No.
+				</div>
+				<div class="col-md-2" th:text="${order.orderDate}">
+					Order Date
+				</div>
+				<div class="col-md-2" th:text="${order.orderStatus.status}">
+					Order Status
+				</div>
+				<div class="col-md-2" th:text="${order.user.name+' '+order.user.lastName}">
+					First Last Name
+				</div>
+				<div class="col-md-5">
+					<a th:href="${'javascript:showOrderDetails('+order.orderId+')'}">View</a>
+					|
+					<a th:href="${'javascript:orderComplete('+order.orderId+');'}">Done</a>
+					<div th:id="${'Order_'+order.orderId}" class="col-md-12 modal fade">
+						<div class="modal-dialog modal-lg">
+		    				<div class="modal-content">
+								<div class="modal-header">
+									Order By: <b><span th:text="${order.user.name+' '+order.user.lastName}">First Last</span></b>
+									|
+									Order On: <b><span th:text="${order.orderDate}">Date & Time</span></b> 
+								</div>
+								<div class="modal-body container-fluid">
+									<div th:if="${order != null}" class="container-fluid">
+	
+										<div>
+											<div class="col-md-8">
+												Item Information
+											</div>
+											<div class="col-md-1">
+												Qty.
+											</div>
+											<div class="col-md-1">
+												Price
+											</div>
+											<div class="col-md-2">
+												Total
+											</div>
+										</div>
+										<hr />
+										<div th:each="cartItem,start : ${order.cartItems}" class="col-md-12" style="margin-top: 25px;">
+											<div class="col-md-12">
+												<div class="col-md-8">
+													<div th:if="${cartItem.menuId.fixedMenuItemObj != null}" th:utext="${cartItem.menuId.fixedMenuItemObj.fixedMenuDescription}">
+														Item Information
+														Item Type: Fixed Item
+													</div>
+													<div th:if="${cartItem.menuId.customMenuItemObj != null}">
+														<div th:utext="${cartItem.menuId.customMenuItemObj.customizationDescription}" class="col-md-12">
+															Item Information
+															Item Type: Custom Item
+														</div>
+														<div th:if="${cartItem.customCartItemSelections != null}" class="col-md-12">
+															<div th:each="cartItemSelections,start2 : ${cartItem.customCartItemSelections}">
+																<div class="col-md-6" th:text="${cartItemSelections.refSelectionBaseItem.itemName}">Sub Item</div>
+																<div class="col-md-6" th:text="${'$ '+cartItemSelections.price}">Price</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-1">
+													<span th:text="${cartItem.quantity}">0</span>
+												</div>
+												<div class="col-md-1" th:text="${'$ '+cartItem.price}">
+													Price Amount
+												</div>
+												<div class="col-md-2" th:text="${'$ '+(cartItem.price * cartItem.quantity)}">
+													Price Amount
+												</div>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<div class="col-md-12">
+										<div class="col-md-8">&nbsp;</div>
+										<div class="col-md-2">
+											<b>Sub Total : <!-- <span th:text="${'$ '+grandTotalPrice}">Price</span> --></b>
+										</div>
+										<div class="col-md-2">
+											<form th:action="@{/admin/orderComplete}"
+													th:method="post">
+												<input type="hidden" name="orderId" th:value="${order.orderId}"/>
+												<input type="hidden" name="type" value="COMPLETE"/>											
+												<button class="btn btn-primary" type="submit">Order Completed</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:unless="${allOpenOrderList != null}" class="container-fluid">
+			No Open Order found so far
+		</div>
+	</div>
+	<div class="tab-pane" id="completedOrder" role="tabpanel">
+		&nbsp;
+		<div th:if="${allCompletedOrderList != null}" class="container-fluid">
+			<div class="col-md-12">
+				<div class="col-md-1">
+					Item No.
+				</div>
+				<div class="col-md-2">
+					Order Date
+				</div>
+				<div class="col-md-2">
+					Order Status
+				</div>
+				<div class="col-md-2">
+					Order By
+				</div>
+				<div class="col-md-5">
+					Links
+				</div>
+			</div>
+			<hr />
+			<div th:each="order,start : ${allCompletedOrderList}" class="col-md-12" style="margin-top: 25px;">
+				<div class="col-md-1" th:text="${start.count}">
+					Item No.
+				</div>
+				<div class="col-md-2" th:text="${order.orderDate}">
+					Order Date
+				</div>
+				<div class="col-md-2" th:text="${order.orderStatus.status}">
+					Order Status
+				</div>
+				<div class="col-md-2" th:text="${order.user.name+' '+order.user.lastName}">
+					First Last Name
+				</div>
+				<div class="col-md-5">
+					<a th:href="${'javascript:showOrderDetails('+order.orderId+')'}">View</a>
+					<div th:id="${'Order_'+order.orderId}" class="col-md-12 modal fade">
+						<div class="modal-dialog modal-lg">
+		    				<div class="modal-content">
+								<div class="modal-header">
+									Order By: <b><span th:text="${order.user.name+' '+order.user.lastName}">First Last</span></b>
+									|
+									Order On: <b><span th:text="${order.orderDate}">Date & Time</span></b> 
+								</div>
+								<div class="modal-body container-fluid">
+									<div th:if="${order != null}" class="container-fluid">
+	
+										<div>
+											<div class="col-md-8">
+												Item Information
+											</div>
+											<div class="col-md-1">
+												Qty.
+											</div>
+											<div class="col-md-1">
+												Price
+											</div>
+											<div class="col-md-2">
+												Total
+											</div>
+										</div>
+										<hr />
+										<div th:each="cartItem,start : ${order.cartItems}" class="col-md-12" style="margin-top: 25px;">
+											<div class="col-md-12">
+												<div class="col-md-8">
+													<div th:if="${cartItem.menuId.fixedMenuItemObj != null}" th:utext="${cartItem.menuId.fixedMenuItemObj.fixedMenuDescription}">
+														Item Information
+														Item Type: Fixed Item
+													</div>
+													<div th:if="${cartItem.menuId.customMenuItemObj != null}">
+														<div th:utext="${cartItem.menuId.customMenuItemObj.customizationDescription}" class="col-md-12">
+															Item Information
+															Item Type: Custom Item
+														</div>
+														<div th:if="${cartItem.customCartItemSelections != null}" class="col-md-12">
+															<div th:each="cartItemSelections,start2 : ${cartItem.customCartItemSelections}">
+																<div class="col-md-6" th:text="${cartItemSelections.refSelectionBaseItem.itemName}">Sub Item</div>
+																<div class="col-md-6" th:text="${'$ '+cartItemSelections.price}">Price</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-1">
+													<span th:text="${cartItem.quantity}">0</span>
+												</div>
+												<div class="col-md-1" th:text="${'$ '+cartItem.price}">
+													Price Amount
+												</div>
+												<div class="col-md-2" th:text="${'$ '+(cartItem.price * cartItem.quantity)}">
+													Price Amount
+												</div>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:unless="${allCompletedOrderList != null}" class="container-fluid">
+			No Completed Order found so far
+		</div>
+	</div>
+</div>
+<div>
+	&nbsp;
+</div>
+<form id="orderPlaceForm" 
+		th:action="@{/admin/orderComplete}"
+		th:method="post">
+	<input type="hidden" id="orderId" name="orderId" />
+	<input type="hidden" id="type" name="type" value="COMPLETE"/>
+</form>
+</body>
+</html>
