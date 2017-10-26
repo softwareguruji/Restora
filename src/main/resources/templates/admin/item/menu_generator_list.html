@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Menu List</title>
-<link rel="stylesheet" href="../css/bootstrap.min.css">
-<script src="../js/jquery-3.2.1.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script>
-	function listByMenuType(value){
-		$('#menu_search_form').submit();
-	}
-</script>
-
+	<meta charset="ISO-8859-1">
+	<title>Menu List</title>
+	<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}">
+	<script th:src="@{../js/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{../js/bootstrap.min.js}"></script>
+	<script>
+		function listByMenuType(value){
+			$('#menu_search_form').submit();
+		}
+	</script>
 </head>
 <body>
 <div th:include="header :: header-nav"></div>

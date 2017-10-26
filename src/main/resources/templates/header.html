@@ -43,7 +43,7 @@
         		Cart <span class="badge" th:text="${cartItemsCount}"></span>
         	</a>
         </li>
-        <li th:if="${username} == null"><a href="/login">Login</a></li>
+        <li th:if="${username} == null"><a th:href="@{/login}">Login</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:unless="${username} == null"><span th:text="${username}">User Name</span> <span class="caret"></span></a>
           <ul class="dropdown-menu">
