@@ -4,6 +4,7 @@
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Customize Menu List</title>
+<link rel="stylesheet" th:href="@{/css/customer_side.css}">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -30,7 +31,7 @@ $(document).ready(function() {
 
 </script>
 </head>
-<body>
+<body class="page_background">
 <div th:include="header :: header-nav"></div>
 <input type="hidden" id="customMenuItemForCustomization" th:value="${customMenuItemForCustomization}"/>
 <div th:each="cmiObj, start:${customMenuItemsList}" class="col-md-12" style="margin-top: 25px;">

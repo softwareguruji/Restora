@@ -1,0 +1,8 @@
+@CHARSET "ISO-8859-1";
+
+.page_background{
+	opacity: 0.9;
+	background-image: url('../images/background.png'); 
+	background-repeat: no-repeat; 
+	background-size: cover; 
+}

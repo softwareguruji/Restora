@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fixed Menu List</title>
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/customer_side.css}">
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script>
@@ -15,18 +16,20 @@ function order(menuId){
 }
 </script>
 </head>
-<body>
+<body class="page_background">
 <div th:include="header :: header-nav"></div>
-<div th:each="fmiObj, start:${fixedMenuItemsList}" class="col-md-12" style="margin-top: 25px;">
-	<div class="col-md-11">
-		<div th:utext="${fmiObj.fixedMenuDescription}"></div>
-		<div>
-			<span th:text="'$ '+${fmiObj.price}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm" th:onclick="'order(\''+${fmiObj.menuItemReference.menuId}+'\');'">Add</button>
+<div>
+	<div th:each="fmiObj, start:${fixedMenuItemsList}" class="col-md-12" style="margin-top: 25px;">
+		<div class="col-md-11">
+			<div th:utext="${fmiObj.fixedMenuDescription}"></div>
+			<div>
+				<span th:text="'$ '+${fmiObj.price}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm" th:onclick="'order(\''+${fmiObj.menuItemReference.menuId}+'\');'">Add</button>
+			</div>
 		</div>
+		<!-- <div class="col-md-1">
+			<button class="btn btn-sm">Add to Cart</button>
+		</div> -->
 	</div>
-	<!-- <div class="col-md-1">
-		<button class="btn btn-sm">Add to Cart</button>
-	</div> -->
 </div>
 
 <form id="orderForm" 
