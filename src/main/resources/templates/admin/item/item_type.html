@@ -38,6 +38,9 @@
 						</div>
 					</div>
 				</div>
+				<div th:if="${errorMessage != null}">
+					<label class="text-danger" th:text="${errorMessage}">Error Message</label>
+				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="col-md-12" style="border-style: solid; border-color: #ddd; border-width: 1px; border-radius: 4px; text-shadow: 5px;">

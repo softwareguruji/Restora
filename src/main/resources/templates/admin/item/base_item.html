@@ -22,7 +22,7 @@
 					<div class="panel-heading" style="text-align: center">Item Details and information</div>
 					<div class="panel-body">
 						<div>
-							<div class="col-md-4 form-group">
+							<div class="col-md-6 form-group">
 								<form id="base_item_search_form" th:action="@{/admin/baseItem}">
 									<label for="itemType">Select Item Type:</label>
 									<select class="form-control" id="itemType" name="itemTypeSelected" th:object="${itemTypeSelected}" onchange="listByItemType(this.value)">
@@ -36,16 +36,10 @@
 									 </select>
 								 </form>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<label>&nbsp;</label>
 								<form th:action="@{/admin/itemType}" method="get">
 									<button type="button" class="col-md-12 btn" type="Submit">Add Item Type</button>
-								</form>
-							</div>
-							<div class="col-md-4">
-								<label>&nbsp;</label>
-								<form th:action="@{/admin/home}" method="get">
-									<button type="button" class="col-md-12 btn" type="Submit">Add New Item</button>
 								</form>
 							</div>
 						</div>
@@ -73,6 +67,9 @@
 							<label class="text-danger" th:if="${#fields.errors('itemName')}" th:errors="*{itemName}">Error Message</label>
 						</div>
 					</form>
+				</div>
+				<div th:if="${errorMessage != null}">
+					<label class="text-danger" th:text="${errorMessage}">Error Message</label>
 				</div>
 			</div>
 			<div class="col-md-12">

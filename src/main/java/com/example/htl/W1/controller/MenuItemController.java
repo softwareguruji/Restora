@@ -154,8 +154,17 @@ public class MenuItemController extends BaseController{
 		modelAndView.addObject("itemTypeList", itemTypeList);
 		
 		BaseItem baseItemObj = baseItemService.getById(Long.parseLong(baseItemId));
-		baseItemService.deleteBaseItem(baseItemObj);
 		
+		try{
+			baseItemService.deleteBaseItem(baseItemObj);
+		}catch(Exception e){
+			if(e.getMessage().contains("ConstraintViolationException")){
+				System.out.println("Could not delete as it is already referenced.");
+				modelAndView.addObject("errorMessage", "\""+baseItemObj.getItemName()+" can not be deleted. Because it is referenced from Menu Item. You must change/remove it.\"");
+			}else{
+				throw e;
+			}
+		}
 		baseItemObj = new BaseItem();
 		modelAndView.addObject("baseItem", baseItemObj);
 		
@@ -187,9 +196,6 @@ public class MenuItemController extends BaseController{
 		
 		User userObj = setupBaseParameter(modelAndView, principal);
 		
-		List<ItemType> itemTypeList = itemTypeService.getByAll();
-		modelAndView.addObject("itemTypeList", itemTypeList);
-		
 		//validation for unique item add
 		if(itemTypeService.getByItemType(itemTypeObj.getItemTypeName()) != null){
 			bindingResult
@@ -201,6 +207,9 @@ public class MenuItemController extends BaseController{
 			modelAndView.addObject("itemType", itemTypeObj);
 		}
 		
+		List<ItemType> itemTypeList = itemTypeService.getByAll();
+		modelAndView.addObject("itemTypeList", itemTypeList);
+
 		modelAndView.addObject("activeHeaderMenu", HeaderLinks.MANAGE_ITEM_TYPE.getText());
 		modelAndView.setViewName("admin/item/item_type");
 		return modelAndView;
@@ -214,7 +223,16 @@ public class MenuItemController extends BaseController{
 		
 		ItemType itemTypeObj = itemTypeService.getById(Long.parseLong(itemTypeId));
 		
-		itemTypeService.deleteItemType(itemTypeObj);
+		try{
+			itemTypeService.deleteItemType(itemTypeObj);
+		}catch(Exception e){
+			if(e.getMessage().contains("ConstraintViolationException")){
+				System.out.println("Could not delete as it is already referenced.");
+				modelAndView.addObject("errorMessage", "\""+itemTypeObj.getItemTypeName()+" can not be deleted. Because it is referenced from Base Item. You must change/remove item type for those items.\"");
+			}else{
+				throw e;
+			}
+		}
 		
 		List<ItemType> itemTypeList = itemTypeService.getByAll();
 		modelAndView.addObject("itemTypeList", itemTypeList);
