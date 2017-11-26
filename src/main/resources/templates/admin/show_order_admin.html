@@ -150,7 +150,7 @@ function orderComplete(orderId){
 											<b>Sub Total : <!-- <span th:text="${'$ '+grandTotalPrice}">Price</span> --></b>
 										</div>
 										<div class="col-md-2">
-											<form th:action="@{/admin/orderComplete}"
+											<form th:action="@{orderComplete}"
 													th:method="post">
 												<input type="hidden" name="orderId" th:value="${order.orderId}"/>
 												<input type="hidden" name="type" value="COMPLETE"/>											
@@ -283,7 +283,7 @@ function orderComplete(orderId){
 	&nbsp;
 </div>
 <form id="orderPlaceForm" 
-		th:action="@{/admin/orderComplete}"
+		th:action="@{orderComplete}"
 		th:method="post">
 	<input type="hidden" id="orderId" name="orderId" />
 	<input type="hidden" id="type" name="type" value="COMPLETE"/>

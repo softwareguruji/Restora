@@ -13,7 +13,7 @@
 <body>
 	<div class="container">
 	
-		<form th:action="@{/logout}" method="get">
+		<form th:action="@{logout}" method="get">
 			<button class="btn btn-md btn-danger btn-block" name="registration"
 				type="Submit">Logout</button>
 		</form>    
@@ -28,28 +28,28 @@
 				</div>
 				<p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
 				<div class="button-div">
-					<form th:action="@{/admin/product}" method="get">
+					<form th:action="@{admin/product}" method="get">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">Add Product</button>
 					</form>
-					<form th:action="@{/admin/listUser}" method="get">
+					<form th:action="@{admin/listUser}" method="get">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">List of Users</button>
 					</form>
-					<form th:action="@{/admin/listProduct}" method="get">
+					<form th:action="@{admin/listProduct}" method="get">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">List of Products</button>
 					</form>
-					<form th:action="@{/admin/w2/listProduct}">
+					<form th:action="@{admin/w2/listProduct}">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">Multilanguage Description Management - Way 2</button>
 					</form>	
-					<form th:action="@{/admin/baseItem}">
+					<form th:action="@{admin/baseItem}">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">Add / Edit / Update Item</button>
 					</form>	
-					<form th:action="@{/admin/itemType}">
+					<form th:action="@{admin/itemType}">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">Add / Edit / Update Item Type</button>
 					</form>	
-					<form th:action="@{/admin/menuCreate}">
+					<form th:action="@{admin/menuCreate}">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">Add / Edit / Update Menu Item</button>
 					</form>	
-					<form th:action="@{/admin/menuCreatorList}">
+					<form th:action="@{admin/menuCreatorList}">
 						<button class="btn btn-lg btn-warning btn-block" type="Submit">List Menu Item</button>
 					</form>	
 				</div>

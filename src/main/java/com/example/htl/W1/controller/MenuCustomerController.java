@@ -146,7 +146,7 @@ public class MenuCustomerController extends BaseController{
 		
 		//modelAndView.addObject("username",principal.getName());
 		
-		RedirectView redirectView = new RedirectView("/fixedMenuList");
+		RedirectView redirectView = new RedirectView("fixedMenuList");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}
@@ -158,7 +158,7 @@ public class MenuCustomerController extends BaseController{
 		
 		modelAndView.addObject("customMenuItemForCustomization",Long.parseLong(menuId));
 		
-		RedirectView redirectView = new RedirectView("/customMenuList");
+		RedirectView redirectView = new RedirectView("customMenuList");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}
@@ -242,7 +242,7 @@ public class MenuCustomerController extends BaseController{
 		
 		//modelAndView.addObject("customMenuItemForCustomization",1L);
 		
-		RedirectView redirectView = new RedirectView("/customMenuList");
+		RedirectView redirectView = new RedirectView("customMenuList");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}
@@ -290,7 +290,7 @@ public class MenuCustomerController extends BaseController{
 			} 
 		}
 		
-		RedirectView redirectView = new RedirectView("/showCart");
+		RedirectView redirectView = new RedirectView("showCart");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}
@@ -313,7 +313,7 @@ public class MenuCustomerController extends BaseController{
 			} 
 		}
 		
-		RedirectView redirectView = new RedirectView("/showCart");
+		RedirectView redirectView = new RedirectView("showCart");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}
@@ -331,7 +331,7 @@ public class MenuCustomerController extends BaseController{
 			} 
 		}
 		
-		RedirectView redirectView = new RedirectView("/admin/orderMgmt");
+		RedirectView redirectView = new RedirectView("orderMgmt");
 		modelAndView.setView(redirectView);
 		return modelAndView;
 	}

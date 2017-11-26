@@ -23,7 +23,7 @@
 					<div class="panel-body">
 						<div>
 							<div class="col-md-6 form-group">
-								<form id="base_item_search_form" th:action="@{/admin/baseItem}">
+								<form id="base_item_search_form" th:action="@{baseItem}">
 									<label for="itemType">Select Item Type:</label>
 									<select class="form-control" id="itemType" name="itemTypeSelected" th:object="${itemTypeSelected}" onchange="listByItemType(this.value)">
 									    <option value="-1">All</option>
@@ -38,7 +38,7 @@
 							</div>
 							<div class="col-md-6">
 								<label>&nbsp;</label>
-								<form th:action="@{/admin/itemType}" method="get">
+								<form th:action="@{itemType}" method="get">
 									<button type="button" class="col-md-12 btn" type="Submit">Add Item Type</button>
 								</form>
 							</div>
@@ -48,7 +48,7 @@
 			</div>
 			<div class="col-md-12">
 				<div class="col-md-12" style="border-style: solid; border-color: #ddd; border-width: 1px; border-radius: 4px; text-shadow: 5px; margin-bottom: 10px; padding: 5px;">
-					<form autocomplete="off" action="#" th:action="@{/admin/baseItemAdd}"
+					<form autocomplete="off" action="#" th:action="@{baseItemAdd}"
 						th:object="${baseItem}" method="post" class="form-inline">
 						<div class="col-md-8 col-md-offset-3">
 							<input type="hidden" th:field="*{baseItemId}" ></input>
@@ -120,7 +120,7 @@
 									<form
 										action="#"
 										method="get" 
-										th:action="@{/admin/baseItemEdit}">
+										th:action="@{baseItemEdit}">
 										<input type="hidden" name="baseItemId" th:value="${biObj.baseItemId}"/>
 										<button 
 											type="submit"
@@ -133,7 +133,7 @@
 									<form
 										action="#"
 										method="get" 
-										th:action="@{/admin/baseItemDelete}">
+										th:action="@{baseItemDelete}">
 										<input type="hidden" name="baseItemId" th:value="${biObj.baseItemId}" />
 										<button 
 											type="submit"

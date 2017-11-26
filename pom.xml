@@ -6,7 +6,6 @@
 	<groupId>com.example</groupId>
 	<artifactId>restora</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
 
 	<name>Restora</name>
 	<description>Restora Project</description>
@@ -52,7 +51,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
 		<dependency>
 			<groupId>net.sourceforge.nekohtml</groupId>
@@ -117,4 +120,5 @@
 	</build>
 
 
+	<packaging>war</packaging>
 </project>

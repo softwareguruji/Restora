@@ -24,7 +24,7 @@
 				<div class="panel-body">
 					<div>
 						<div class="col-md-4 form-group">
-							<form id="menu_search_form" th:action="@{/admin/menuCreatorList}" method="post">
+							<form id="menu_search_form" th:action="@{menuCreatorList}" method="post">
 								<label for="menuType">Select Menu Type:</label>
 								<select class="form-control" id="menuType" name="menuTypeSelected" th:object="${menuTypeSelected}" onchange="listByMenuType(this.value)">
 								    <option value="-1">All</option>
@@ -83,7 +83,7 @@
 								<form
 									action="#"
 									method="post" 
-									th:action="@{/admin/menuCreate}">
+									th:action="@{menuCreate}">
 									<input type="hidden" name="loadForEditmenuId" th:value="${mObj.menuId}"/>
 									<input type="hidden" name="requestType" value="LoadForEdit"/>
 									<button 
@@ -97,7 +97,7 @@
 								<form
 									action="#"
 									method="get" 
-									th:action="@{/admin/baseItemDelete}">
+									th:action="@{baseItemDelete}">
 									<input type="hidden" name="menuId" th:value="${mObj.menuId}" />
 									<button 
 										type="submit"
@@ -112,7 +112,7 @@
 				</table>
 			</div>
 			<div class="col-md-12" align="center">
-				<form th:action="@{/admin/menuCreate}">
+				<form th:action="@{menuCreate}">
 					<button class="btn btn-lg btn-warning btn-block" type="Submit">Add / Edit / Update Menu Item</button>
 				</form>	
 			</div>

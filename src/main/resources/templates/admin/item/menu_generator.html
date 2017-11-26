@@ -53,7 +53,7 @@
 </head>
 <body>
 <div th:include="header :: header-nav"></div>
-	<form id="menuGenerate" autocomplete="off" action="#" th:action="@{/admin/menuCreate}"
+	<form id="menuGenerate" autocomplete="off" action="#" th:action="@{menuCreate}"
 						th:object="${menuGenerate}" method="post" class="form-inline">
 	<input type="hidden" id="requestType" name="requestType" value="Normal" />
 	<div class="container">
@@ -227,7 +227,7 @@
 		<div>&nbsp;</div>
 	</div>
 	</form>
-	<form id="menuList" th:action="@{/admin/menuCreatorList}" method="get">
+	<form id="menuList" th:action="@{menuCreatorList}" method="get">
 	</form>	
 </body>
 </html>

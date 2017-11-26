@@ -84,7 +84,7 @@ function cartOperation(cartItemId, type){
 		</div>
 		<div class="col-md-2">
 			<form id="placeOrder" 
-				th:action="@{/orderPlaceCancel}"
+				th:action="@{orderPlaceCancel}"
 				th:method="post">
 				<input type="hidden" id="orderId" name="orderId" th:value="${unOrderedOrder.orderId}"/>
 				<input type="hidden" id="typeOrder" name="type" th:value="PLACE"/>
@@ -97,7 +97,7 @@ function cartOperation(cartItemId, type){
 	&nbsp;
 </div>
 <form id="cartUpdateForm" 
-		th:action="@{/cartItemAddRemoveDelete}"
+		th:action="@{cartItemAddRemoveDelete}"
 		th:method="post">
 	<input type="hidden" id="cartItemId" name="cartItemId" />
 	<input type="hidden" id="type" name="type" />

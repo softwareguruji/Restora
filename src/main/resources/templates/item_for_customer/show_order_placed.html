@@ -122,7 +122,7 @@ function cartOperation(cartItemId, type){
 	&nbsp;
 </div>
 <form id="cartUpdateForm" 
-		th:action="@{/cartItemAddRemoveDelete}"
+		th:action="@{cartItemAddRemoveDelete}"
 		th:method="post">
 	<input type="hidden" id="cartItemId" name="cartItemId" />
 	<input type="hidden" id="type" name="type" />
